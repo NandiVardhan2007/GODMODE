@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: g0dm0d3-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # Render's health check — matches the /v1/health endpoint
+    healthCheckPath: /v1/health
+
+    # Auto-deploy on push to main
+    autoDeploy: true
+
+    # Environment variables — fill these in the Render dashboard
+    # (do NOT commit secrets here, set them in Render UI)
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false            # Render will prompt you to set this
+
+      - key: GODMODE_API_KEY
+        sync: false            # Bearer token your projects send
+
+      - key: GODMODE_TIER_KEYS
+        sync: false            # e.g. enterprise:your-GODMODE_API_KEY
+
+      - key: CORS_ORIGIN
+        value: "*"             # Allow all origins (change to your domain if needed)
+
+      - key: RATE_LIMIT_TOTAL
+        value: "0"             # 0 = unlimited for free tier (you control access via GODMODE_API_KEY)
+
+      - key: NODE_ENV
+        value: production
